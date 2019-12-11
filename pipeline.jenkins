@@ -2,11 +2,24 @@
 
 pipeline {
     agent { label 'master' }
-
     stages {
-        stage('Test') {
+        stage('Reading project configuration') {
             steps {
-                echo 'Testing..'
+               script{ 
+                   def opciones =[]
+                   yaml = readYaml (file: 'resources/projects.yaml')
+                   keys =  yaml.keySet()
+                   keys.each {
+                        yaml[it].each{
+                            opciones = opciones << it.name
+                        }
+                   }
+                   println opciones
+                   project = input(
+                        message: "Select a git tag",
+                        parameters: [choice(name: "git_tag", choices: "${opciones}", description: "Git tag")]
+                   )
+               }
             }
         }
         stage('Deploy') {
