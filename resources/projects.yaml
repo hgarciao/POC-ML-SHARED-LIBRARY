@@ -8,3 +8,14 @@
      kind : gcs
      name : 
      url  : gs:/adlkfalf
+ - name : digestor
+   repos:
+    ml : 
+     kind: git
+     name: POC-ML-PROJECT
+     url : https://github.com/hgarciao/POC-ML-PROJECT.git
+    data :
+     kind : gcs
+     name : 
+     url  : gs:/adlkfalf
+
