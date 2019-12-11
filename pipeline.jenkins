@@ -1,0 +1,18 @@
+@Library('POC-ML-SHARED-LIBRARIES')_
+
+pipeline {
+    agent { label 'master' }
+
+    stages {
+        stage('Test') {
+            steps {
+                echo 'Testing..'
+            }
+        }
+        stage('Deploy') {
+            steps {
+                echo 'Deploying....'
+            }
+        }
+    }
+}
