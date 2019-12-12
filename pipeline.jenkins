@@ -79,7 +79,7 @@ pipeline {
         stage('Job Generation') {
             steps {
                 jobDsl targets: './resources/seed.groovy',
-                       additionalParameters: [ntbfile: "${ntbfile}", branch: "${branch}"]
+                       additionalParameters: [ntbfile: "hola", branch: "${branch}"]
             }
         }
         
