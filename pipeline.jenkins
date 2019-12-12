@@ -64,7 +64,9 @@ pipeline {
                    println input
                   
                 }
-                jobDsl targets: ['./resources/seed.groovy']
+                jobDsl targets: './resources/seed.groovy',
+                       additionalParameters: [message: 'Hello from pipeline', credentials: 'SECRET']
+                       
             }
         }
     }
