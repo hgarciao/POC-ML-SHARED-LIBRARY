@@ -1,13 +1,8 @@
-def project = 'quidryan/aws-sdk-test'
-def branchApi = new URL("https://api.github.com/repos/${project}/branches")
-def branches = new groovy.json.JsonSlurper().parse(branchApi.newReader())
-branches.each {
-    def branchName = it.name
-    def jobName = "${project}-${branchName}".replaceAll('/','-')
-    job(jobName) {
-        steps {
-            out.println("MESSAGE : ${branch}")
-            out.println("MESSAGE : ${ntbfile}")
-        }
-    }
+import groovy.json.JsonSlurper
+
+folder('POC') {
+    description('Folder containing all jobs for folder-a')
 }
+
+def string = readFileFromWorkspace("${ntbfile}")
+def json = new JsonSlurper().parseText(string)
