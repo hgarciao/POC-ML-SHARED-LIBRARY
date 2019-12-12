@@ -31,7 +31,7 @@ def imprt = jsn.cells.each{
             }else{
                 trainning = trainning << it
             }
-        }else if(it.metadata.tags.contains('results')){}
+        }else if(it.metadata.tags.contains('results')){
                 results = results << it
         }
     }
