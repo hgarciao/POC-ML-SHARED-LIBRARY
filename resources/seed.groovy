@@ -7,7 +7,7 @@ branches.each {
     job(jobName) {
         steps {
             out.println("MESSAGE : ${branch}")
-            out.println("MESSAGE : ${nbtfile}")
+            out.println("MESSAGE : ${ntbfile}")
         }
     }
 }
