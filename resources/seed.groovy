@@ -6,8 +6,7 @@ branches.each {
     def jobName = "${project}-${branchName}".replaceAll('/','-')
     job(jobName) {
         steps {
-            prinltn "MESSAGE : ${message}"
-            prinltn "CREDENTIALS : ${credentials}"
+            out.println("MESSAGE : ${message}")
         }
     }
 }
