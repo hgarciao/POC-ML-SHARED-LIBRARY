@@ -1,11 +1,13 @@
 @Library('POC-ML-SHARED-LIBRARIES')_
 
 def selection
+def ntbfile
+def branch
 
 pipeline {
     agent { label 'master' }
     stages {
-        stage('Reading CONF') {
+        stage('Input') {
             steps {
                script{ 
                    def opciones = []
@@ -25,8 +27,10 @@ pipeline {
                    )
                    selection =  projects.findAll{ it.name == project  }
                    selection = selection[0]
-                   println selection.repos.ml.kind
-                   println selection.repos.ml.url
+                   
+                   /**/
+                   
+                   
                }
             }
         }
@@ -39,36 +43,46 @@ pipeline {
                    //PENDIENTE USAR CREDENCIALES
                     sh "git clone ${selection.repos.ml.url.replace('https://','https://')}"
                 }
-               
-               
-               /*checkout([$class: 'GitSCM', 
-                    branches: [[name: 'master']], 
-                    doGenerateSubmoduleConfigurations: false, 
-                    userRemoteConfigs: [[credentialsId: 'github', url: "${selection.repos.ml.url}"]]
-                ])
+                
                 script{
-                   sh "ls"
-                   def input = readJSON file: "./ntbs/POC_COMPLETO.ipynb"
-                   println input
-                }*/
+                    
+                    def branches= []
+                    
+                    sh "git ls-remote -h ${selection.repos.ml.url} > result.txt"
+                    
+                    def output=readFile('result.txt').split("\n")
+                    
+                    output.each {
+                        branches = branches << it.substring(it.lastIndexOf("/")+1,it.length())
+                    }
+                    
+                    branch = input(
+                        message: "Seleccione Rama",
+                        parameters: [choice(name: "Ramas", choices: branches, description: "Ramas a seleccionar")]
+                    )
+                    
+                   println branch
+                    
+                }
+                
             }
         }
         
         stage('Read NTBs config') {
             steps {
-                sh "ls ./${selection.repos.ml.name}/ntbs"
-                sh "ls ./resources/seed.groovy"
-                
                 script{
-                   def input = readJSON file: "./${selection.repos.ml.name}/ntbs/POC_COMPLETO.ipynb"
-                   println input
-                  
+                   ntbfile = readJSON file: "./${selection.repos.ml.name}/ntbs/POC_COMPLETO.ipynb"
                 }
-                jobDsl targets: './resources/seed.groovy',
-                       additionalParameters: [message: 'Hello from pipeline', credentials: 'SECRET']
-                       
             }
         }
+        
+        stage('Job Generation') {
+            steps {
+                jobDsl targets: './resources/seed.groovy',
+                       additionalParameters: [ntbfile: "${ntbfile}", branch: "${branch}"]
+            }
+        }
+        
     }
     
     post {
