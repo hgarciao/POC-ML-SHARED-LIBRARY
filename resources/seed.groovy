@@ -5,6 +5,5 @@ folder('POC') {
 }
 
 def json = new JsonSlurper().parseText("${ntbfile}")
-
-out.println("${json}") 
-
+def imprt = json.cells.findAll{ it.metadata.tags.contains('imports')}
+out.println(imprt)
