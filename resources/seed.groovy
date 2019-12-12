@@ -35,20 +35,4 @@ def imprt = jsn.cells.each{
                 results = results << it
         }
     }
-    
-    
 }
-
-out.println(imports)
-out.println('\n********************************\n')
-out.println(parameters)
-out.println('\n********************************\n')
-out.println(preproc)
-out.println('\n********************************\n')
-out.println(preproc_test)
-out.println('\n********************************\n')
-out.println(trainning)
-out.println('\n********************************\n')
-out.println(trainning_test)
-out.println('\n********************************\n')
-out.println(results)
