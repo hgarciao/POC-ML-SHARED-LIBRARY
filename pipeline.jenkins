@@ -32,8 +32,17 @@ pipeline {
         }
         stage('Checkout Project') {
             steps {
-               checkout([$class: 'GitSCM', 
-                    branches: [[name: '*/master']], 
+                
+               withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId:'github',
+                  usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD']
+                ]){
+                   //PENDIENTE USAR CREDENCIALES
+                    sh "git clone ${selection.repos.ml.url.replace('https://','https://')}"
+                }
+               
+               
+               /*checkout([$class: 'GitSCM', 
+                    branches: [[name: 'master']], 
                     doGenerateSubmoduleConfigurations: false, 
                     userRemoteConfigs: [[credentialsId: 'github', url: "${selection.repos.ml.url}"]]
                 ])
@@ -41,18 +50,28 @@ pipeline {
                    sh "ls"
                    def input = readJSON file: "./ntbs/POC_COMPLETO.ipynb"
                    println input
-                }
+                }*/
             }
         }
         
         stage('Read NTBs config') {
             steps {
+                sh "ls ./${selection.repos.ml.name}/ntbs"
+                sh "ls ./resources/seed.groovy"
+                
                 script{
-                   sh "ls"
-                   def input = readJSON file: "./ntbs/POC_COMPLETO.ipynb"
+                   def input = readJSON file: "./${selection.repos.ml.name}/ntbs/POC_COMPLETO.ipynb"
                    println input
+                  
                 }
+                jobDsl targets: ['./resources/seed.groovy']
             }
+        }
+    }
+    
+    post {
+        always {
+          deleteDir()
         }
     }
 }
