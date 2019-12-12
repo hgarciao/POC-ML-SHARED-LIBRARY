@@ -1,30 +1,57 @@
 @Library('POC-ML-SHARED-LIBRARIES')_
 
+def selection
+
 pipeline {
     agent { label 'master' }
     stages {
-        stage('Reading project configuration') {
+        stage('Reading CONF') {
             steps {
                script{ 
-                   def opciones =[]
+                   def opciones = []
+                   def projects = []
                    yaml = readYaml (file: 'resources/projects.yaml')
                    keys =  yaml.keySet()
                    keys.each {
                         yaml[it].each{
+                            projects = projects << it
                             opciones = opciones << it.name
                         }
                    }
-                   println opciones
                    project = input(
-                        message: "Select a git tag",
-                        parameters: [choice(name: "git_tag", choices: "${opciones}", description: "Git tag")]
+                        message: "Seleccione el proyecto",
+                        parameters: [choice(name: "Proyectos", choices: opciones, description: "Proyectos a seleccionar")]
+                        
                    )
+                   selection =  projects.findAll{ it.name == project  }
+                   selection = selection[0]
+                   println selection.repos.ml.kind
+                   println selection.repos.ml.url
                }
             }
         }
-        stage('Deploy') {
+        stage('Checkout Project') {
             steps {
-                echo 'Deploying....'
+               checkout([$class: 'GitSCM', 
+                    branches: [[name: '*/master']], 
+                    doGenerateSubmoduleConfigurations: false, 
+                    userRemoteConfigs: [[credentialsId: 'github', url: "${selection.repos.ml.url}"]]
+                ])
+                script{
+                   sh "ls"
+                   def input = readJSON file: "./ntbs/POC_COMPLETO.ipynb"
+                   println input
+                }
+            }
+        }
+        
+        stage('Read NTBs config') {
+            steps {
+                script{
+                   sh "ls"
+                   def input = readJSON file: "./ntbs/POC_COMPLETO.ipynb"
+                   println input
+                }
             }
         }
     }
