@@ -38,13 +38,6 @@ pipeline {
         stage('Checkout Project') {
             steps {
                 
-               withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId:'github',
-                  usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD']
-                ]){
-                   //PENDIENTE USAR CREDENCIALES
-                    sh "git clone ${selection.repos.ml.url.replace('https://','https://')}"
-                }
-                
                 script{
                     
                     def branches= []
@@ -63,6 +56,14 @@ pipeline {
                     )
                     
                    println branch
+                   
+                  withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId:'github',
+                  usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD']
+                    ]){
+                       //PENDIENTE USAR CREDENCIALES
+                        sh "git clone --branch ${branch} ${selection.repos.ml.url.replace('https://','https://')}"
+                    }
+                
                     
                 }
                 
