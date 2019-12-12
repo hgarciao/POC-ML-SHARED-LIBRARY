@@ -7,8 +7,8 @@
      url : https://github.com/hgarciao/POC-ML-PROJECT.git
     data :
      kind : gcs
-     name : 
-     url  : gs:/adlkfalf
+     name : PewDiePie.csv
+     url  : gs://datahgarcia/PewDiePie.csv
  - name : digestor
    repos:
     ml : 
