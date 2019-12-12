@@ -4,6 +4,7 @@ def selection
 def ntbfile
 def branch
 
+
 pipeline {
     agent { label 'master' }
     stages {
@@ -70,8 +71,12 @@ pipeline {
 
         stage('Job Generation') {
             steps {
-                jobDsl targets: './resources/seed.groovy',
-                       additionalParameters: [ntbfile: "../${selection.repos.ml.name}/ntbs/POC_COMPLETO.ipynb", branch: "${branch}"]
+                script{
+                   ntbfile = readFile("./${selection.repos.ml.name}/ntbs/POC_COMPLETO.ipynb") 
+                   jobDsl targets: './resources/seed.groovy',
+                       additionalParameters: [ntbfile: "${ntbfile}", branch: "${branch}"]
+                }
+                
             }
         }
         
