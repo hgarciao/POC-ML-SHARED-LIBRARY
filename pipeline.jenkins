@@ -67,19 +67,11 @@ pipeline {
                 
             }
         }
-        
-        stage('Read NTBs config') {
-            steps {
-                script{
-                   ntbfile = readJSON file: "./${selection.repos.ml.name}/ntbs/POC_COMPLETO.ipynb"
-                }
-            }
-        }
-        
+
         stage('Job Generation') {
             steps {
                 jobDsl targets: './resources/seed.groovy',
-                       additionalParameters: [ntbfile: "hola", branch: "${branch}"]
+                       additionalParameters: [ntbfile: "../${selection.repos.ml.name}/ntbs/POC_COMPLETO.ipynb", branch: "${branch}"]
             }
         }
         
