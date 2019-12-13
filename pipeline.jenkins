@@ -75,7 +75,7 @@ pipeline {
                 script{
                    ntbfile = readFile("./${selection.repos.ml.name}/ntbs/POC_COMPLETO.ipynb") 
                    jobDsl targets: './resources/seed.groovy',
-                       additionalParameters: [ntbfile: "${ntbfile}", branch: "${branch}"]
+                       additionalParameters: [ntbfile: "${ntbfile}", branch: "${branch}",project: "${selection.name}"]
                 }
                 
             }
