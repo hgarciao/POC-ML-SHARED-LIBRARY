@@ -1,4 +1,4 @@
-import groovy.json.JsonSlurper
+/*import groovy.json.JsonSlurper
 
 folder('POC') {
     description('Folder containing all jobs for folder-a')
@@ -62,4 +62,18 @@ pipelineJob('POC/job-name') {
     }
   }
 }
+*/
+folder("${project}") {
+    description('Folder containing all jobs for folder-a')
+}
+
+pipelineJob("Pipeline") {
+    displayName('Pipeline')
+        definition {
+            cps { 
+                script(readFileFromWorkspace(pipeline.groovy))
+            }
+        }
+    }
+
 
