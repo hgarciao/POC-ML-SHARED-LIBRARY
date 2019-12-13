@@ -11,7 +11,13 @@ pipelineJob('job-name') {
                 stages {
                     stage('Stage 1') {
                         steps {
-                            echo 'logic'
+                            script{
+                                for (int i = 0; i < 3; i++) {
+                                    stage("Test ${i}") {
+                                        sh "echo ${i}"
+                                    }
+                                }
+                            }
                         }
                     }
                     stage('Stage 2') {
