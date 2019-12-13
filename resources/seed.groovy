@@ -27,7 +27,6 @@ pipelineJob('job-name') {
                     }
                 }
             }
-        }
       '''.stripIndent())
       sandbox()     
     }
