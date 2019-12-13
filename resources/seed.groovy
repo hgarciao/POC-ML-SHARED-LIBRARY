@@ -2,7 +2,7 @@ folder("${project}") {
     description('Folder containing all jobs for folder-a')
 }
 
-pipelineJob('job-name') {
+pipelineJob("${project}/pipeline") {
   definition {
     cps {
       script('''
@@ -11,12 +11,14 @@ pipelineJob('job-name') {
                 stages {
                     stage('Stage 1') {
                         steps {
+                            sh 'ls'
                             script{
-                                for (int i = 0; i < 3; i++) {
+                                ntbfile = readFile("./ntbs/POC_COMPLETO.ipynb") 
+                                /*for (int i = 0; i < 3; i++) {
                                     stage("Test ${i}") {
                                         sh "echo ${i}"
                                     }
-                                }
+                                }*/
                             }
                         }
                     }
