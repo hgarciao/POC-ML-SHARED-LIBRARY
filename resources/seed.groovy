@@ -46,7 +46,7 @@ pipelineJob('POC/job-name') {
                 stages {
                     stage('Stage 1') {
                         steps {
-                            echo ${branch}
+                            echo "${branch}"
                         }
                     }
                     stage('Stage 2') {
